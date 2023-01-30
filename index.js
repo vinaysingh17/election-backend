@@ -35,7 +35,9 @@ const AuthRoutes = require("./Routes/AuthRoutes");
 const UserRoutes = require("./Routes/UserRoutes");
 const VotorRoutes = require("./Routes/VotorRoutes");
 const BoothRoutes = require("./Routes/BoothRoutes");
+const QuestionRoutes = require("./Routes/QuestionRoutes");
 const CandidateResultRoute = require("./Routes/CandidateResultRoutes");
+const AnswerRoutes = require("./Routes/AnswerRoute");
 const BoothResultRoutes = require("./Routes/BoothResultRoutes");
 // const UserRoutes =require("./Routes/")
 
@@ -43,6 +45,8 @@ app.use("/auth", AuthRoutes);
 app.use("/user", UserRoutes);
 app.use("/voter", VotorRoutes);
 app.use("/booth", BoothRoutes);
+app.use("/question", QuestionRoutes);
+app.use("/answer", AnswerRoutes);
 app.use("/candidate", CandidateResultRoute);
 app.use("/booth-result", BoothResultRoutes);
 
