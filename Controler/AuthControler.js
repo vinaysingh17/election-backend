@@ -2,9 +2,10 @@ const User = require("../Schema/UserSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const validator = require("../Middleware/Validator.js");
+const { generateJWt } = require("../Middleware/Authentication.js");
 const {
   validateMobile,
-  generateJWt,
+
   validateEmail,
   isValidRequestBody,
   isValid,
@@ -31,13 +32,7 @@ const createUser = async function (req, res) {
     }
     var isError = false;
 
-    const validationsField = [
-      "fullName",
-      "mobile",
-      "email",
-      "role",
-      "password",
-    ];
+    const validationsField = ["fullName", "mobile", "role", "password"];
     for (let index = 0; index < validationsField.length; index++) {
       if (!isValid(userDetails[validationsField[index]])) {
         isError = true;
@@ -53,8 +48,8 @@ const createUser = async function (req, res) {
     if (isError) return null;
     const checkMobile = validateMobile(userDetails.mobile, res);
     if (!checkMobile) return null;
-    const checkEmail = validateEmail(userDetails.email, res);
-    if (!checkEmail) return null;
+    // const checkEmail = validateEmail(userDetails.email, res);
+    // if (!checkEmail) return null;
 
     const validatePass = validator.validatePassWord(userDetails.password);
 
@@ -96,7 +91,7 @@ const userLogin = async function (req, res) {
   try {
     const loginDetails = req.body;
 
-    const { emailId, password } = loginDetails;
+    const { mobile, password } = loginDetails;
 
     if (!validator.isValidRequestBody(loginDetails)) {
       return res
@@ -104,10 +99,10 @@ const userLogin = async function (req, res) {
         .send({ status: false, message: "Please provide login details" });
     }
 
-    if (!validator.isValid(emailId)) {
+    if (!validator.isValid(mobile)) {
       return res
         .status(400)
-        .send({ status: false, message: "Email-Id is required" });
+        .send({ status: false, message: "Mobile is required" });
     }
 
     if (!validator.isValid(password)) {
@@ -116,12 +111,12 @@ const userLogin = async function (req, res) {
         .send({ status: false, message: "Password is required" });
     }
 
-    const userData = await User.findOne({ emailId });
+    const userData = await User.findOne({ mobile });
 
     if (!userData) {
       return res.status(401).send({
         status: false,
-        message: `Login failed!! Email-Id is incorrect!`,
+        message: `Login failed!! Mobile is incorrect!`,
       });
     }
 
@@ -133,59 +128,14 @@ const userLogin = async function (req, res) {
         message: `Login failed!! password is incorrect.`,
       });
     let userId = userData._id;
-    const token = generateJWt({
-      _id: userData._id,
-      role: userData.role,
-      email: userData.emailId,
-    });
-    const {
-      firstName,
-      lastName,
+
+    const { fullName, _id, role } = userData;
+    let sendThis = {
+      fullName,
       mobile,
       _id,
-      city,
-      postcode,
-      age,
       role,
-      isEmailVerified,
-      gstNumber,
-      isGstVerified,
-      businessDescription,
-      gender,
-    } = userData;
-    let sendThis =
-      role == "user"
-        ? {
-            firstName,
-            lastName,
-            mobile,
-            _id,
-            city,
-            postcode,
-            emailId,
-            age,
-            role,
-            isEmailVerified,
-            gender,
-            token: token,
-          }
-        : {
-            firstName,
-            lastName,
-            mobile,
-            _id,
-            city,
-            emailId,
-            postcode,
-            age,
-            role,
-            isEmailVerified,
-            gstNumber,
-            isGstVerified,
-            businessDescription,
-            gender,
-            token: token,
-          };
+    };
 
     return res.status(200).send({
       status: true,

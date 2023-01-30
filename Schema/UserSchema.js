@@ -14,60 +14,32 @@ const userdata = new mongoose.Schema(
     },
     email: {
       type: String,
-      require: true,
-      unique: true,
+      // require: true,
+      // unique: true,
       match:
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     },
 
-    inviteCode: {
-      type: String,
-      required: true,
-    },
-
-    usedInviteCode: {
-      type: String,
-      default: null,
-    },
     role: {
       type: String,
       require: true,
-      enum: ["user", "admin"],
+      enum: ["ground", "survey", "admin"],
     },
 
     password: {
       type: "String",
       require: true,
     },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
+
     avatar: {
       type: String,
       default: null,
-    },
-    readyToTravel: {
-      type: Boolean,
-      default: false,
-    },
-    travelTo: {
-      type: String,
-      default: "",
-    },
-    location: {
-      type: {
-        type: String,
-        default: "Point",
-      },
-      // coordinates: { type: [Number] },
-      coordinates: [],
     },
   },
 
   { timestamps: true }
 );
-userdata.index({ location: "2dsphere" });
+// userdata.index({ location: "2dsphere" });
 
 // userdata.index({ location_1: "2dsphere" });
 module.exports = new mongoose.model("user", userdata);

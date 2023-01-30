@@ -3,10 +3,11 @@ const router = express.Router();
 
 const multer = require("multer");
 const {
-  getUserDetails,
-  updateUserDetails,
-  deleteUser,
-} = require("../Controler/UserControler");
+  uploadCandidateList,
+  getCandidateResult,
+  getCandidateWinnerPositionWise,
+} = require("../Controler/CandidateResultControler");
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads");
@@ -15,6 +16,7 @@ const storage = multer.diskStorage({
     cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
   },
 });
+
 const upload = multer({
   storage: storage,
   limits: {
@@ -22,12 +24,9 @@ const upload = multer({
   },
 });
 
-router.get("/get", getUserDetails);
-router.put(
-  "/update/:id",
-  upload.fields([{ name: "avatar", maxCount: 1 }]),
-  updateUserDetails
-);
-router.delete("/delete/:id", upload.none(), deleteUser);
+router.post("/upload", uploadCandidateList);
+router.get("/get", getCandidateResult);
+router.get("/candidate-winner-position", getCandidateWinnerPositionWise);
+router.get("/candidate-winner-position-id", getCandidateWinnerPositionWise);
 
 module.exports = router;
