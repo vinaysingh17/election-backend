@@ -39,6 +39,7 @@ const QuestionRoutes = require("./Routes/QuestionRoutes");
 const CandidateResultRoute = require("./Routes/CandidateResultRoutes");
 const AnswerRoutes = require("./Routes/AnswerRoute");
 const BoothResultRoutes = require("./Routes/BoothResultRoutes");
+const TimingRoutes = require("./Routes/TimingRoutes");
 // const UserRoutes =require("./Routes/")
 
 app.use("/auth", AuthRoutes);
@@ -49,6 +50,7 @@ app.use("/question", QuestionRoutes);
 app.use("/answer", AnswerRoutes);
 app.use("/candidate", CandidateResultRoute);
 app.use("/booth-result", BoothResultRoutes);
+app.use("/timing", TimingRoutes);
 
 // app.use("/user", UserRoutes);
 // app.use("/subscription", SubscriptionRoutes);

@@ -151,9 +151,6 @@ const userLogin = async function (req, res) {
 
 const getUserDetails = async function (req, res) {
   try {
-    const userId = req.params.userId;
-    const userIdFromToken = req.userId;
-
     const findUserDetails = await User.find(req.query);
     if (!findUserDetails) {
       return res

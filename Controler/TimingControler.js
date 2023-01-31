@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Answers = require("../Schema/Answers");
 const Answer = require("../Schema/Answers");
+const Timing = require("../Schema/Timing");
 const VotorList = require("../Schema/VotorList");
 
 const createBulAnswer = async (req, res) => {
@@ -11,15 +12,10 @@ const createBulAnswer = async (req, res) => {
     .status(200)
     .send({ success: true, data: uploadedList, message: "Data uploaded" });
 };
-const createAnswer = async (req, res, next) => {
+const createLogin = async (req, res, next) => {
   try {
     console.log(req.body);
-    // return null;
-    // const uploadedList = await Questions.insertMany(req.body.data, {
-    //   ordered: true,
-    // });
-
-    const upload = await Answer.create(req.body);
+    const upload = await Timing.create(req.body);
     res
       .status(200)
       .send({ success: true, data: upload, message: "Data uploaded" });
@@ -27,6 +23,33 @@ const createAnswer = async (req, res, next) => {
     res.status(400).send({ success: false, error: e.message });
   }
 };
+const updateLogout = async (req, res) => {
+  try {
+    const { surveyBy, logout, date } = req.body;
+    const data = await Timing.findOneAndUpdate(
+      { surveyBy, date },
+      { logout },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      message: "Logout successful",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getTimings = async (req, res) => {
+  const { surveyBy } = req.params;
+  if (!surveyBy)
+    return res
+      .status(400)
+      .send({ success: false, message: "surveyBy is required" });
+  const data = await Timing.find({ surveyBy });
+  res.status(200).send({ success: true, message: "get all", data });
+};
+
 const getStatistic = async (req, res, next) => {
   try {
     // console.log(req.body);
@@ -72,6 +95,11 @@ const dailySurvey = async (req, res, next) => {
     }
     const groupByBoothId1 = await Answers.aggregate([
       {
+        $match: {
+          surveyBy: mongoose.Types.ObjectId(surveyBy),
+        },
+      },
+      {
         $group: {
           _id: {
             date: "$date",
@@ -87,8 +115,10 @@ const dailySurvey = async (req, res, next) => {
 };
 
 module.exports = {
-  createAnswer,
+  updateLogout,
+  createLogin,
   createBulAnswer,
   getStatistic,
+  getTimings,
   dailySurvey,
 };

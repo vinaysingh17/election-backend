@@ -5,6 +5,11 @@ const userdata = new mongoose.Schema(
       type: String,
       enum: ["kannada", "hindi", "english"],
     },
+    surveyBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+    date: String,
     answer: {
       type: Number,
       required: true,

@@ -9,6 +9,11 @@ const {
   createBulAnswer,
 } = require("../Controler/AnswerControler");
 const { createQuestion } = require("../Controler/QuestionControler");
+const {
+  createLogin,
+  updateLogout,
+  getTimings,
+} = require("../Controler/TimingControler");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -26,10 +31,12 @@ const upload = multer({
 });
 
 // router.get("/get", getUserDetails);
-router.post("/create", createAnswer);
-router.post("/create-bulk", createBulAnswer);
-router.get("/group/:question", getStatistic);
-router.get("/daily/:surveyBy", dailySurvey);
+router.post("/login", createLogin);
+router.post("/logout", updateLogout);
+router.get("/get/:surveyBy", getTimings);
+// router.post("/create-bulk", createBulAnswer);
+// router.get("/group/:question", getStatistic);
+// router.get("/daily/:surveyBy", dailySurvey);
 // router.put(
 //   "/update/:id",
 //   upload.fields([{ name: "avatar", maxCount: 1 }]),
