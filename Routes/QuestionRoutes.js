@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const multer = require("multer");
-const { createQuestion } = require("../Controler/QuestionControler");
+const {
+  createQuestion,
+  getQuestions,
+} = require("../Controler/QuestionControler");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,6 +24,7 @@ const upload = multer({
 
 // router.get("/get", getUserDetails);
 router.post("/create", createQuestion);
+router.get("/get", getQuestions);
 // router.put(
 //   "/update/:id",
 //   upload.fields([{ name: "avatar", maxCount: 1 }]),
