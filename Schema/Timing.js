@@ -8,6 +8,7 @@ const userdata = new mongoose.Schema(
       type: String,
       default: null,
     },
+    location: {},
     surveyBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
