@@ -91,8 +91,13 @@ const dailySurvey = async (req, res, next) => {
   }
 };
 
+const getAnswers = async (req, res) => {
+  const answers = await Answers.find();
+  res.status(200).send({ data: answers });
+};
 module.exports = {
   createAnswer,
+  getAnswers,
   createBulAnswer,
   getStatistic,
   dailySurvey,

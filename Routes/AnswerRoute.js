@@ -7,6 +7,7 @@ const {
   getStatistic,
   dailySurvey,
   createBulAnswer,
+  getAnswers,
 } = require("../Controler/AnswerControler");
 const { createQuestion } = require("../Controler/QuestionControler");
 
@@ -25,7 +26,7 @@ const upload = multer({
   },
 });
 
-// router.get("/get", getUserDetails);
+router.get("/get", getAnswers);
 router.post("/create", createAnswer);
 router.post("/create-bulk", createBulAnswer);
 router.get("/group/:question", getStatistic);
