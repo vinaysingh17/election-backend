@@ -26,6 +26,15 @@ const userdata = new mongoose.Schema(
       type: String,
       required: true,
     },
+    age: {
+      type: Number,
+    },
+    caste: {
+      type: String,
+    },
+    ward: {
+      type: Number,
+    },
   },
 
   { timestamps: true }

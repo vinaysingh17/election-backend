@@ -72,6 +72,11 @@ const dailySurvey = async (req, res, next) => {
     }
     const groupByBoothId1 = await Answers.aggregate([
       {
+        $match: {
+          surveyBy: mongoose.Types.ObjectId(surveyBy),
+        },
+      },
+      {
         $group: {
           _id: {
             date: "$date",
