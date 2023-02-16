@@ -52,15 +52,70 @@ const getGenderFilterByBooth = async (req, res, nex) => {
         .status(400)
         .send({ success: false, message: "Booth Number (booth) is required" });
     }
+    // const data1 = await VotorList.find({ Booth_No: 1 });
+
     const data = await VotorList.aggregate([
       {
         $match: {
-          Booth_No: +req.query.booth,
+          Booth_No: req.query.booth,
         },
       },
       {
         $group: {
           _id: { sex: "$sex" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).send({ success: true, message: "Data Fetched", data });
+  } catch (error) {
+    res.status(400).send({ success: false, message: error.message });
+  }
+};
+const getCasteWiseFilterByBooth = async (req, res, nex) => {
+  try {
+    if (!req.query.booth) {
+      return res
+        .status(400)
+        .send({ success: false, message: "Booth Number (booth) is required" });
+    }
+    // const data1 = await VotorList.find({ Booth_No: 1 });
+    const data = await VotorList.aggregate([
+      {
+        $match: {
+          Booth_No: req.query.booth,
+        },
+      },
+      {
+        $group: {
+          _id: { Caste: "$Caste" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).send({ success: true, message: "Data Fetched", data });
+  } catch (error) {
+    res.status(400).send({ success: false, message: error.message });
+  }
+};
+
+const getPartyWiseStrenthByBooth = async (req, res, nex) => {
+  try {
+    if (!req.query.booth) {
+      return res
+        .status(400)
+        .send({ success: false, message: "Booth Number (booth) is required" });
+    }
+    // const data1 = await VotorList.find({ Booth_No: 1 });
+    const data = await VotorList.aggregate([
+      {
+        $match: {
+          Booth_No: req.query.booth,
+        },
+      },
+      {
+        $group: {
+          _id: { Voter_Favour_Party: "$Voter_Favour_Party" },
           count: { $sum: 1 },
         },
       },
@@ -237,4 +292,6 @@ module.exports = {
   getGenderFilterByBooth,
   ageWiseFilterByBooth,
   ageWiseFilter,
+  getCasteWiseFilterByBooth,
+  getPartyWiseStrenthByBooth,
 };

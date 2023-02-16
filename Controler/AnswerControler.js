@@ -80,6 +80,7 @@ const dailySurvey = async (req, res, next) => {
         $group: {
           _id: {
             date: "$date",
+            mobile: "$mobile",
           },
           count: { $sum: 1 },
         },
