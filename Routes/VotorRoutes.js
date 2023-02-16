@@ -16,6 +16,7 @@ const {
   ageWiseFilterByBooth,
   getCasteWiseFilterByBooth,
   getPartyWiseStrenthByBooth,
+  FindAndUpdateByEPIC,
 } = require("../Controler/VotorControler");
 const VotorList = require("../Schema/VotorList");
 
@@ -37,12 +38,14 @@ const upload = multer({
 
 router.post("/upload", uploadVotorListPost);
 router.get("/get", getVotorList);
+router.patch("/update-by-epic-no", FindAndUpdateByEPIC);
 router.get("/gender-filter", getGenderFilter);
 router.get("/gender-filter-id", getGenderFilterByBooth);
 router.get("/caste-group-id", getCasteWiseFilterByBooth);
 router.get("/party-group-id", getPartyWiseStrenthByBooth);
 router.get("/age-group", ageWiseFilter);
 router.get("/age-group-id", ageWiseFilterByBooth);
+// router.get("/age-group-id", ageWiseFilterByBooth);
 // router.delete("/delete/:id", upload.none(), deleteUser);
 
 module.exports = router;

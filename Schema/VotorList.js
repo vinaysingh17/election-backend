@@ -91,7 +91,7 @@ const VotorList = new mongoose.Schema(
       default: null,
     },
     Is_Voter_Available_At_Election: {
-      type: String,
+      type: Boolean,
       trim: true,
       default: null,
     },

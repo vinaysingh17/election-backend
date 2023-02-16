@@ -21,7 +21,7 @@ const getVotorList = async (req, res, next) => {
     let limit = 100;
     if (req.query.limit) limit = req.query.limit;
     if (req.query.page) page = req.query.page;
-    const uploadedList = await VotorList.find()
+    const uploadedList = await VotorList.find(req.query)
       .skip(page * limit)
       .limit(limit);
     res.status(200).send({ success: true, data: uploadedList });
@@ -285,6 +285,60 @@ const ageWiseFilterByBooth = async (req, res, nex) => {
   }
 };
 
+const FindAndUpdateByEPIC = async (req, res) => {
+  if (!req.body.EPIC_No) {
+    return res
+      .status(400)
+      .send({ success: false, message: "Epic no is required" });
+  }
+  if (!req.body.Voter_Mobile_Number) {
+    return res
+      .status(400)
+      .send({ success: false, message: "Mobile no is required" });
+  }
+  if (!req.body.Caste) {
+    return res
+      .status(400)
+      .send({ success: false, message: "Caste is required" });
+  }
+  if (!req.body.Sub_Caste) {
+    return res
+      .status(400)
+      .send({ success: false, message: "Sub_Caste is required" });
+  }
+  if (!req.body.Voter_Favour_Party) {
+    return res
+      .status(400)
+      .send({ success: false, message: "Voter_Favour_Party is required" });
+  }
+  if (!req.body.Is_Voter_Available_At_Election) {
+    return res.status(400).send({
+      success: false,
+      message: "Is_Voter_Available_At_Election is required",
+    });
+  }
+
+  try {
+    const data = await VotorList.findOneAndUpdate(
+      { EPIC_No: req.body.EPIC_No },
+      {
+        Voter_Mobile_Number: req.body.Voter_Mobile_Number,
+        Caste: req.body.Caste,
+        Sub_Caste: req.body.Sub_Caste,
+        Voter_Favour_Party: req.body.Voter_Favour_Party,
+        Is_Voter_Available_At_Election: req.body.Is_Voter_Available_At_Election,
+      },
+      {
+        new: true,
+      }
+    );
+    res.status(200).send({ success: true, message: "Updated", data });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   uploadVotorListPost,
   getVotorList,
@@ -294,4 +348,5 @@ module.exports = {
   ageWiseFilter,
   getCasteWiseFilterByBooth,
   getPartyWiseStrenthByBooth,
+  FindAndUpdateByEPIC,
 };

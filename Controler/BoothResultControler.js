@@ -112,6 +112,7 @@ const getResultVoteShareBooth = async (req, res, next) => {
     res.status(400).send({ success: false, message: error.message });
   }
 };
+
 const getResultVoteShare = async (req, res, next) => {
   try {
     const groupByBoothId1 = await BoothResult.aggregate([
