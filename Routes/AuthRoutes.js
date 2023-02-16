@@ -28,6 +28,7 @@ router.post("/register", upload.none(), createUser);
 router.post("/register-ground", upload.none(), createGround);
 router.post("/login-ground", upload.none(), groundLogin);
 router.post("/login", upload.none(), userLogin);
+// router.get("/get-ground", getUserDetails);
 router.get("/get", getUserDetails);
 
 module.exports = router;

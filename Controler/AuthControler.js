@@ -288,10 +288,6 @@ const getUserDetails = async function (req, res) {
         .send({ status: false, message: "User Not Found!!" });
     }
 
-    // if (findUserDetails._id.toString() != userIdFromToken) {
-    //     return res.status(403).send({ status: false, message: "You Are Not Authorized!!" });
-    // }
-
     if (findUserDetails.length == 0) {
       return res.status(200).send({
         status: false,
