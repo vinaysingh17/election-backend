@@ -301,11 +301,11 @@ const FindAndUpdateByEPIC = async (req, res) => {
       .status(400)
       .send({ success: false, message: "Caste is required" });
   }
-  if (!req.body.Sub_Caste) {
-    return res
-      .status(400)
-      .send({ success: false, message: "Sub_Caste is required" });
-  }
+  // if (!req.body.Sub_Caste) {
+  //   return res
+  //     .status(400)
+  //     .send({ success: false, message: "Sub_Caste is required" });
+  // }
   if (!req.body.Voter_Favour_Party) {
     return res
       .status(400)
@@ -324,7 +324,7 @@ const FindAndUpdateByEPIC = async (req, res) => {
       {
         Voter_Mobile_Number: req.body.Voter_Mobile_Number,
         Caste: req.body.Caste,
-        Sub_Caste: req.body.Sub_Caste,
+        // Sub_Caste: req.body.Sub_Caste,
         Voter_Favour_Party: req.body.Voter_Favour_Party,
         Is_Voter_Available_At_Election: req.body.Is_Voter_Available_At_Election,
       },
