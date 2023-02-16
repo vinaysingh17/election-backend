@@ -152,7 +152,7 @@ const createGround = async function (req, res) {
       data: saveUserInDb,
     });
   } catch (err) {
-    return res.status(500).send({ status: false, error: err.message });
+    return res.status(500).send({ status: false, message: err.message });
   }
 };
 
