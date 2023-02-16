@@ -6,6 +6,8 @@ const {
   createUser,
   userLogin,
   getUserDetails,
+  createGround,
+  groundLogin,
 } = require("../Controler/AuthControler");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -23,6 +25,8 @@ const upload = multer({
 });
 
 router.post("/register", upload.none(), createUser);
+router.post("/register-ground", upload.none(), createGround);
+router.post("/login-ground", upload.none(), groundLogin);
 router.post("/login", upload.none(), userLogin);
 router.get("/get", getUserDetails);
 
