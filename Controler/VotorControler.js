@@ -269,7 +269,6 @@ const ageWiseFilterByBooth = async (req, res, nex) => {
         { total: total },
         { field: "18-19", value: age1819 },
         { field: "20-29", value: age2029 },
-        { field: "20-29", value: age2029 },
         { field: "30-39", value: age3039 },
         { field: "40-49", value: age4049 },
         { field: "50-59", value: age5059 },
