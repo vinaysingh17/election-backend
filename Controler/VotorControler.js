@@ -260,7 +260,6 @@ const ageWiseFilterByBooth = async (req, res, nex) => {
       Booth_No: +req.query.booth,
       age: {
         $gte: 80,
-        $lt: 120,
       },
     }).count();
     res.status(200).send({
