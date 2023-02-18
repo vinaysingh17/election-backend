@@ -59,7 +59,7 @@ const getGenderFilterByBooth = async (req, res, nex) => {
     const data = await VotorList.aggregate([
       {
         $match: {
-          Booth_No: req.query.booth,
+          Booth_No: +req.query.booth,
         },
       },
       {
@@ -85,7 +85,7 @@ const getCasteWiseFilterByBooth = async (req, res, nex) => {
     const data = await VotorList.aggregate([
       {
         $match: {
-          Booth_No: req.query.booth,
+          Booth_No: +req.query.booth,
         },
       },
       {
@@ -112,7 +112,7 @@ const getPartyWiseStrenthByBooth = async (req, res, nex) => {
     const data = await VotorList.aggregate([
       {
         $match: {
-          Booth_No: req.query.booth,
+          Booth_No: +req.query.booth,
         },
       },
       {
