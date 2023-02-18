@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 const VotorList = new mongoose.Schema(
   {
     AC_NO: {
-      type: String,
+      type: Number,
       // type:
       trim: true,
       default: null,
     },
     Booth_No: {
-      type: String,
+      type: Number,
 
       trim: true,
       default: null,
@@ -49,7 +49,7 @@ const VotorList = new mongoose.Schema(
       default: null,
     },
     SRNO: {
-      type: String,
+      type: Number,
       trim: true,
       default: null,
       default: null,
@@ -91,6 +91,16 @@ const VotorList = new mongoose.Schema(
       default: null,
     },
     Is_Voter_Available_At_Election: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    POLLING_STATION_ADR1: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    C_HOUSE_NO: {
       type: String,
       trim: true,
       default: null,
