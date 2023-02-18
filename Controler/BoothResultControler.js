@@ -94,6 +94,9 @@ const getResultVoteShareBooth = async (req, res, next) => {
           INC: {
             $sum: "$INC",
           },
+          OTH: {
+            $sum: "$OTH",
+          },
         },
       },
       {
