@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const validator = require("../Middleware/Validator");
 const { generateJWt } = require("../Middleware/Authentication");
 const { validateMobile, validateEmail } = require("../Middleware/Validator");
+const GroundUser = require("../Schema/GroundUser");
 
 // /****************************************************************Get User Data********************************************/
 
@@ -61,6 +62,15 @@ const getUserDetails = async function (req, res) {
     });
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
+  }
+};
+
+const getGroundUsers = async (req, res) => {
+  try {
+    const data = await GroundUser.find(req.query);
+    res.status(200).send({ success: true, message: "Ground user data", data });
+  } catch (err) {
+    res.status(400).send({ success: false, message: err.message });
   }
 };
 
@@ -152,6 +162,7 @@ module.exports = {
   getUserDetails,
   updateUserDetails,
   deleteUser,
+  getGroundUsers,
   forgetPass,
 };
 

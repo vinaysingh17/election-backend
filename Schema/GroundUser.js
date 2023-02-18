@@ -12,6 +12,12 @@ const userdata = new mongoose.Schema(
       trim: true,
       unique: true,
     },
+    GF_KEY: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
 
     mobile: {
       type: Number,
