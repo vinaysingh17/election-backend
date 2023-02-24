@@ -17,13 +17,27 @@ const getVotorList = async (req, res, next) => {
   try {
     // console.log(req.body);
     // return null;
-    // let page = 0;
-    // let limit = 100;
+    let page = 0;
+    let limit = 100;
+    let options = {};
+    if (req.query.Booth_No) {
+      options = {
+        Booth_No: req.query.Booth_No,
+      };
+    }
+
+    if (req.query.Caste) {
+      options = {
+        ...options,
+        Caste: req.query.Caste,
+      };
+    }
     if (req.query.limit) limit = req.query.limit;
     if (req.query.page) page = req.query.page;
-    const uploadedList = await VotorList.find(req.query);
-    // .skip(page * limit)
-    // .limit(limit);
+    console.log(options);
+    const uploadedList = await VotorList.find(options)
+      .skip(page * limit)
+      .limit(limit);
     res
       .status(200)
       .send({ success: true, data: uploadedList, length: uploadedList.length });
