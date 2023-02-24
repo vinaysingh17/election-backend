@@ -65,7 +65,7 @@ const VotorList = new mongoose.Schema(
       default: null,
     },
     age: {
-      type: Number,
+      type: String,
       trim: true,
       default: null,
     },
