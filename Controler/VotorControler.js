@@ -457,8 +457,13 @@ const filterByAge80 = async (req, res, next) => {
 const getStatus = async (req, res, next) => {
   try {
     // const { min, max, Booth_No } = req.query;
-    const total = await VotorList.countDocuments();
-    const Pending = await VotorList.countDocuments({ Caste: null });
+    const total = await VotorList.countDocuments({
+      Booth_No: req.query.Booth_No,
+    });
+    const Pending = await VotorList.countDocuments({
+      Caste: null,
+      Booth_No: req.query.Booth_No,
+    });
     res.status(200).send({ success: true, data: { total, Pending } });
   } catch (error) {
     console.log(error);
