@@ -48,9 +48,7 @@ const getVotorList = async (req, res, next) => {
     let options = [];
     if (req.query.limit) limit = req.query.limit;
     if (req.query.page) page = req.query.page;
-    if (req.query.First_Name) 
-    {
-
+    if (req.query.First_Name) {
       options = [
         ...options,
 
@@ -446,11 +444,22 @@ const filterByAge80 = async (req, res, next) => {
       page = req.query.page;
     }
     const data = await VotorList.find({
+      Booth_No: req.query.Booth_No,
       age: { $gte: 80 },
     })
       .skip(page * 100)
       .limit(100);
     res.status(200).send({ success: true, data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getStatus = async (req, res, next) => {
+  try {
+    // const { min, max, Booth_No } = req.query;
+    const total = await VotorList.countDocuments();
+    const Pending = await VotorList.countDocuments({ Caste: null });
+    res.status(200).send({ success: true, data: { total, Pending } });
   } catch (error) {
     console.log(error);
   }
@@ -486,4 +495,5 @@ module.exports = {
   FindAndUpdateByEPIC,
   filterByAge80,
   filterByCaste,
+  getStatus,
 };

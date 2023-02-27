@@ -20,6 +20,7 @@ const {
   filterByCaste,
   filterByAge,
   filterByAge80,
+  getStatus,
 } = require("../Controler/VotorControler");
 const VotorList = require("../Schema/VotorList");
 
@@ -51,6 +52,7 @@ router.get("/age-group-id", ageWiseFilterByBooth);
 router.get("/filter-by-caste", filterByCaste);
 router.get("/filter-by-age", filterByAge);
 router.get("/12-d", filterByAge80);
+router.get("/status", getStatus);
 
 // router.get("/age-group-id", ageWiseFilterByBooth);
 // router.delete("/delete/:id", upload.none(), deleteUser);
