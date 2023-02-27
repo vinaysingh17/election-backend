@@ -48,7 +48,9 @@ const getVotorList = async (req, res, next) => {
     let options = [];
     if (req.query.limit) limit = req.query.limit;
     if (req.query.page) page = req.query.page;
-    if (req.query.First_Name) {
+    if (req.query.First_Name) 
+    {
+
       options = [
         ...options,
 
