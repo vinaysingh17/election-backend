@@ -13,31 +13,81 @@ const uploadVotorListPost = async (req, res, next) => {
   }
 };
 
-const getVotorList = async (req, res, next) => {
+const getVotorList2 = async (req, res, next) => {
   try {
     // console.log(req.body);
     // return null;
     let page = 0;
     let limit = 100;
     let options = {};
-    if (req.query.Booth_No) {
-      options = {
-        Booth_No: req.query.Booth_No,
-      };
-    }
 
-    if (req.query.Caste) {
-      options = {
-        ...options,
-        Caste: req.query.Caste,
-      };
-    }
     if (req.query.limit) limit = req.query.limit;
     if (req.query.page) page = req.query.page;
+    if (req.query.First_Name) {
+      const { First_Name } = req.query;
+      let name = First_Name.charAt(0).toUpperCase() + First_Name.slice(1);
+      options = { ...options, First_Name: name };
+    }
     console.log(options);
     const uploadedList = await VotorList.find(options)
       .skip(page * limit)
       .limit(limit);
+    res
+      .status(200)
+      .send({ success: true, data: uploadedList, length: uploadedList.length });
+  } catch (e) {
+    res.status(400).send({ success: false, error: e.message });
+  }
+};
+const getVotorList = async (req, res, next) => {
+  try {
+    // console.log(req.body);
+    // return null;
+    let page = 0;
+    let limit = 100;
+    let options = [];
+    if (req.query.limit) limit = req.query.limit;
+    if (req.query.page) page = req.query.page;
+    if (req.query.First_Name) {
+      options = [
+        ...options,
+
+        {
+          $search: {
+            index: "default",
+            text: {
+              query: req.query.First_Name,
+              path: {
+                wildcard: "*",
+              },
+            },
+          },
+        },
+      ];
+    }
+    options = [
+      ...options,
+      {
+        $match: {
+          Booth_No: +req.query.Booth_No,
+        },
+      },
+    ];
+
+    options = [
+      ...options,
+      {
+        $skip: page * 100,
+      },
+      {
+        $limit: 100,
+      },
+    ];
+    console.log(options);
+    const uploadedList = await VotorList.aggregate(options);
+    // const uploadedList = await VotorList.find(options)
+    //   .skip(page * limit)
+    //   .limit(limit);
     res
       .status(200)
       .send({ success: true, data: uploadedList, length: uploadedList.length });
@@ -353,6 +403,74 @@ const FindAndUpdateByEPIC = async (req, res) => {
   }
 };
 
+const filterByCaste = async (req, res, next) => {
+  try {
+    const { Caste, Booth_No } = req.query;
+    let page = 0;
+    if (req.query.page) {
+      page = req.query.page;
+    }
+    const data = await VotorList.find(req.query)
+      .skip(page * 100)
+      .limit(100);
+    res.status(200).send({ success: true, data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const filterByAge = async (req, res, next) => {
+  try {
+    const { min, max, Booth_No } = req.query;
+    let page = 0;
+    if (req.query.page) {
+      page = req.query.page;
+    }
+    const data = await VotorList.find({
+      Booth_No: Booth_No,
+      age: { $gte: +min, $lte: +max },
+    })
+      .skip(page * 100)
+      .limit(100);
+    res.status(200).send({ success: true, data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const filterByAge80 = async (req, res, next) => {
+  try {
+    const { min, max, Booth_No } = req.query;
+    let page = 0;
+    if (req.query.page) {
+      page = req.query.page;
+    }
+    const data = await VotorList.find({
+      age: { $gte: 80 },
+    })
+      .skip(page * 100)
+      .limit(100);
+    res.status(200).send({ success: true, data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+// const searching = async (req, res, next) => {
+//   try {
+//     const { min, max, Booth_No } = req.query;
+//     let page = 0;
+//     if (req.query.page) {
+//       page = req.query.page;
+//     }
+//     const data = await VotorList.find({
+//       age: { $gte: 80 },
+//     })
+//       .skip(page * 100)
+//       .limit(100);
+//     res.status(200).send({ success: true, data });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
 module.exports = {
   uploadVotorListPost,
   getVotorList,
@@ -362,5 +480,8 @@ module.exports = {
   ageWiseFilter,
   getCasteWiseFilterByBooth,
   getPartyWiseStrenthByBooth,
+  filterByAge,
   FindAndUpdateByEPIC,
+  filterByAge80,
+  filterByCaste,
 };

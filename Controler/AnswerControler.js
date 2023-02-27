@@ -91,15 +91,55 @@ const dailySurvey = async (req, res, next) => {
     res.status(400).send({ success: false, error: e.message });
   }
 };
+const SurveyByOne = async (req, res, next) => {
+  try {
+    // console.log(req.body);
+    // return null;
+    const { surveyBy } = req.params;
+    console.log(surveyBy, "<< this is question");
+    if (!surveyBy) {
+      return res
+        .status(400)
+        .send({ success: false, message: "surveyBy (surveyBy) is required" });
+    }
+    const groupByBoothId1 = await Answers.aggregate([
+      {
+        $match: {
+          surveyBy: mongoose.Types.ObjectId(surveyBy),
+        },
+      },
+      {
+        $group: {
+          _id: {
+            date: "$date",
+            // mobile: "$mobile",
+          },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).send({ success: true, data: groupByBoothId1 });
+  } catch (e) {
+    res.status(400).send({ success: false, error: e.message });
+  }
+};
 
 const getAnswers = async (req, res) => {
-  const answers = await Answers.find();
+  const answers = await Answers.find(req.query);
   res.status(200).send({ data: answers });
 };
+
+const totalAnswers = async (req, res) => {
+  const answers = await Answers.countDocuments();
+  res.status(200).send({ data: parseInt(answers / 12) });
+};
+
 module.exports = {
   createAnswer,
   getAnswers,
   createBulAnswer,
   getStatistic,
+  totalAnswers,
   dailySurvey,
+  SurveyByOne,
 };

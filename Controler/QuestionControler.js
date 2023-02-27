@@ -22,7 +22,7 @@ const getQuestions = async (req, res, next) => {
     // console.log(req.body);
     // return null;
 
-    const uploadedList = await Questions.find();
+    const uploadedList = await Questions.find(req.query);
 
     res.status(200).send({ success: true, data: uploadedList });
   } catch (e) {

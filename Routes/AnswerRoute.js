@@ -8,6 +8,8 @@ const {
   dailySurvey,
   createBulAnswer,
   getAnswers,
+  totalAnswers,
+  SurveyByOne,
 } = require("../Controler/AnswerControler");
 const { createQuestion } = require("../Controler/QuestionControler");
 
@@ -28,9 +30,11 @@ const upload = multer({
 
 router.get("/get", getAnswers);
 router.post("/create", createAnswer);
+router.get("/total", totalAnswers);
 router.post("/create-bulk", createBulAnswer);
 router.get("/group/:question", getStatistic);
 router.get("/daily/:surveyBy", dailySurvey);
+router.get("/member/:surveyBy", SurveyByOne);
 // router.put(
 //   "/update/:id",
 //   upload.fields([{ name: "avatar", maxCount: 1 }]),

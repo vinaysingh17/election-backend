@@ -17,6 +17,9 @@ const {
   getCasteWiseFilterByBooth,
   getPartyWiseStrenthByBooth,
   FindAndUpdateByEPIC,
+  filterByCaste,
+  filterByAge,
+  filterByAge80,
 } = require("../Controler/VotorControler");
 const VotorList = require("../Schema/VotorList");
 
@@ -45,6 +48,10 @@ router.get("/caste-group-id", getCasteWiseFilterByBooth);
 router.get("/party-group-id", getPartyWiseStrenthByBooth);
 router.get("/age-group", ageWiseFilter);
 router.get("/age-group-id", ageWiseFilterByBooth);
+router.get("/filter-by-caste", filterByCaste);
+router.get("/filter-by-age", filterByAge);
+router.get("/12-d", filterByAge80);
+
 // router.get("/age-group-id", ageWiseFilterByBooth);
 // router.delete("/delete/:id", upload.none(), deleteUser);
 
