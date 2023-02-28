@@ -21,6 +21,8 @@ const {
   filterByAge,
   filterByAge80,
   getStatus,
+  CompletedVoters,
+  PendingVoterList,
 } = require("../Controler/VotorControler");
 const VotorList = require("../Schema/VotorList");
 
@@ -42,6 +44,9 @@ const upload = multer({
 
 router.post("/upload", uploadVotorListPost);
 router.get("/get", getVotorList);
+router.get("/get-completed", CompletedVoters);
+router.get("/get-pending", PendingVoterList);
+
 router.patch("/update-by-epic-no", FindAndUpdateByEPIC);
 router.get("/gender-filter", getGenderFilter);
 router.get("/gender-filter-id", getGenderFilterByBooth);
@@ -51,6 +56,7 @@ router.get("/age-group", ageWiseFilter);
 router.get("/age-group-id", ageWiseFilterByBooth);
 router.get("/filter-by-caste", filterByCaste);
 router.get("/filter-by-age", filterByAge);
+// router.get("/filter-available-id", getPartyWiseStrenthByBooth);
 router.get("/12-d", filterByAge80);
 router.get("/status", getStatus);
 

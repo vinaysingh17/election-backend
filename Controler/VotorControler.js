@@ -105,6 +105,140 @@ const getVotorList = async (req, res, next) => {
     res.status(400).send({ success: false, error: e.message });
   }
 };
+const CompletedVoters = async (req, res, next) => {
+  try {
+    // console.log(req.body);
+    // return null;
+    let page = 0;
+    let limit = 100;
+    let options = [];
+    if (req.query.limit) limit = req.query.limit;
+    if (req.query.page) page = req.query.page;
+    if (req.query.First_Name) {
+      options = [
+        ...options,
+
+        {
+          $search: {
+            index: "default",
+            text: {
+              query: req.query.First_Name,
+              path: {
+                wildcard: "*",
+              },
+            },
+          },
+        },
+      ];
+    }
+    if (req.query.EPIC_No) {
+      options = [
+        ...options,
+        {
+          $match: {
+            EPIC_No: req.query.EPIC_No,
+          },
+        },
+      ];
+    }
+    options = [
+      ...options,
+      {
+        $match: {
+          Booth_No: +req.query.Booth_No,
+          Caste: { $ne: null },
+        },
+      },
+    ];
+
+    options = [
+      ...options,
+      {
+        $skip: page * 100,
+      },
+      {
+        $limit: 100,
+      },
+    ];
+    console.log(options);
+    const uploadedList = await VotorList.aggregate(options);
+    // const uploadedList = await VotorList.find(options)
+    //   .skip(page * limit)
+    //   .limit(limit);
+    res
+      .status(200)
+      .send({ success: true, data: uploadedList, length: uploadedList.length });
+  } catch (e) {
+    res.status(400).send({ success: false, error: e.message });
+  }
+};
+const PendingVoterList = async (req, res, next) => {
+  try {
+    // console.log(req.body);
+    // return null;
+    let page = 0;
+    let limit = 100;
+    let options = [];
+    if (req.query.limit) limit = req.query.limit;
+    if (req.query.page) page = req.query.page;
+    if (req.query.First_Name) {
+      options = [
+        ...options,
+
+        {
+          $search: {
+            index: "default",
+            text: {
+              query: req.query.First_Name,
+              path: {
+                wildcard: "*",
+              },
+            },
+          },
+        },
+      ];
+    }
+    if (req.query.EPIC_No) {
+      options = [
+        ...options,
+        {
+          $match: {
+            EPIC_No: req.query.EPIC_No,
+          },
+        },
+      ];
+    }
+    options = [
+      ...options,
+      {
+        $match: {
+          Booth_No: +req.query.Booth_No,
+          Caste: null,
+        },
+      },
+    ];
+
+    options = [
+      ...options,
+      {
+        $skip: page * 100,
+      },
+      {
+        $limit: 100,
+      },
+    ];
+    console.log(options);
+    const uploadedList = await VotorList.aggregate(options);
+    // const uploadedList = await VotorList.find(options)
+    //   .skip(page * limit)
+    //   .limit(limit);
+    res
+      .status(200)
+      .send({ success: true, data: uploadedList, length: uploadedList.length });
+  } catch (e) {
+    res.status(400).send({ success: false, error: e.message });
+  }
+};
 
 const getGenderFilter = async (req, res, nex) => {
   try {
@@ -134,6 +268,7 @@ const getGenderFilterByBooth = async (req, res, nex) => {
       {
         $match: {
           Booth_No: +req.query.booth,
+          Caste: { $ne: null },
         },
       },
       {
@@ -156,10 +291,12 @@ const getCasteWiseFilterByBooth = async (req, res, nex) => {
         .send({ success: false, message: "Booth Number (booth) is required" });
     }
     // const data1 = await VotorList.find({ Booth_No: 1 });
+
     const data = await VotorList.aggregate([
       {
         $match: {
           Booth_No: +req.query.booth,
+          Caste: { $ne: null },
         },
       },
       {
@@ -187,6 +324,7 @@ const getPartyWiseStrenthByBooth = async (req, res, nex) => {
       {
         $match: {
           Booth_No: +req.query.booth,
+          Caste: { $ne: null },
         },
       },
       {
@@ -273,6 +411,7 @@ const ageWiseFilter = async (req, res, nex) => {
     res.status(400).send({ success: false, message: error.message });
   }
 };
+
 const ageWiseFilterByBooth = async (req, res, nex) => {
   try {
     if (!req.query.booth) {
@@ -428,6 +567,7 @@ const filterByCaste = async (req, res, next) => {
     console.log(error);
   }
 };
+
 const filterByAge = async (req, res, next) => {
   try {
     const { min, max, Booth_No } = req.query;
@@ -511,4 +651,6 @@ module.exports = {
   filterByAge80,
   filterByCaste,
   getStatus,
+  CompletedVoters,
+  PendingVoterList,
 };
