@@ -65,6 +65,16 @@ const getVotorList = async (req, res, next) => {
         },
       ];
     }
+    if (req.query.EPIC_No) {
+      options = [
+        ...options,
+        {
+          $match: {
+            EPIC_No: req.query.EPIC_No,
+          },
+        },
+      ];
+    }
     options = [
       ...options,
       {
