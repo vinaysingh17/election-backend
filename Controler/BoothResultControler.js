@@ -105,11 +105,31 @@ const getResultVoteShareBooth = async (req, res, next) => {
         },
       },
     ]);
+    const groupByYear = await BoothResult.aggregate([
+      {
+        $match: {
+          Booth_No: +req.query.booth,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            Year: "$Year",
+          },
+        },
+      },
+      {
+        $sort: {
+          "_id.Year": 1,
+        },
+      },
+    ]);
 
     res.status(200).send({
       success: true,
       message: "Done",
       data: groupByBoothId1,
+      groupByYear,
     });
   } catch (error) {
     res.status(400).send({ success: false, message: error.message });

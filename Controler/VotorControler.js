@@ -334,6 +334,20 @@ const getPartyWiseStrenthByBooth = async (req, res, nex) => {
         },
       },
     ]);
+    const totalNumbers = await VotorList.aggregate([
+      {
+        $match: {
+          Booth_No: +req.query.booth,
+          Caste: { $ne: null },
+        },
+      },
+      {
+        $group: {
+          _id: { Voter_Favour_Party: "$Voter_Favour_Party" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
     res.status(200).send({ success: true, message: "Data Fetched", data });
   } catch (error) {
     res.status(400).send({ success: false, message: error.message });
@@ -611,8 +625,8 @@ const getStatus = async (req, res, next) => {
       Booth_No: req.query.Booth_No,
     });
     const Pending = await VotorList.countDocuments({
-      Caste: null,
       Booth_No: req.query.Booth_No,
+      Caste: null,
     });
     res.status(200).send({ success: true, data: { total, Pending } });
   } catch (error) {
