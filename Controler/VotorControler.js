@@ -268,7 +268,6 @@ const getGenderFilterByBooth = async (req, res, nex) => {
       {
         $match: {
           Booth_No: +req.query.booth,
-          Caste: { $ne: null },
         },
       },
       {
