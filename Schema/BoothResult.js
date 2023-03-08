@@ -46,8 +46,18 @@ const BoothList = new mongoose.Schema(
       trim: true,
       default: 0,
     },
+    OTH: {
+      type: Number,
+      trim: true,
+      default: 0,
+    },
     JDS_PER: {
       type: String,
+      trim: true,
+      default: 0,
+    },
+    TOTAL: {
+      type: Number,
       trim: true,
       default: 0,
     },
@@ -57,4 +67,4 @@ const BoothList = new mongoose.Schema(
 );
 
 // userdata.index({ location_1: "2dsphere" });
-module.exports = new mongoose.model("booth_result2", BoothList);
+module.exports = new mongoose.model("booth_result3", BoothList);

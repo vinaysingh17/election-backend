@@ -105,31 +105,48 @@ const getResultVoteShareBooth = async (req, res, next) => {
         },
       },
     ]);
-    const groupByYear = await BoothResult.aggregate([
-      {
-        $match: {
-          Booth_No: +req.query.booth,
-        },
-      },
-      {
-        $group: {
-          _id: {
-            Year: "$Year",
-          },
-        },
-      },
-      {
-        $sort: {
-          "_id.Year": 1,
-        },
-      },
-    ]);
+    const s2013 = await BoothResult.countDocuments({
+      Booth_No: +req.query.booth,
+      Year: 2013,
+    });
+    const s2014 = await BoothResult.countDocuments({
+      Booth_No: +req.query.booth,
+      Year: 2014,
+    });
+    const s2018 = await BoothResult.countDocuments({
+      Booth_No: +req.query.booth,
+      Year: 2018,
+    });
+    const s2019 = await BoothResult.countDocuments({
+      Booth_No: +req.query.booth,
+      Year: 2019,
+    });
+    // const groupByYear = await BoothResult.aggregate([
+    //   {
+    //     $match: {
+    //       Booth_No: +req.query.booth,
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: {
+    //         Year: "2013",
+    //       },
+    //       count: { $sum: 1 },
+    //     },
+    //   },
+    //   {
+    //     $sort: {
+    //       "_id.Year": 1,
+    //     },
+    //   },
+    // ]);
 
     res.status(200).send({
       success: true,
       message: "Done",
       data: groupByBoothId1,
-      groupByYear,
+      groupByYear: [s2013, s2014, s2018, s2019],
     });
   } catch (error) {
     res.status(400).send({ success: false, message: error.message });
